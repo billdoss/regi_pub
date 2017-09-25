@@ -14,23 +14,23 @@
 		public $DateFin;
 	}
 */
-	include("index.php");
-//require "scripts/manipBd.php";
 
-	    $Media;
+require "scripts/manipBd.php";
+
+	  $Media;
 		$Support;
 		$EtatGrilleTarifaire;
 		$libele;
 		$EstIndicie;
 		$PrixBase;
 		$Bcp_Prod_Mem_Mark;
-		$Prod_Mark_diff_mem_annonceur;
-		$Prod_Mark_diff_bcp_annonceur;
+		$Prod_Mark_Diff_Mem_Annonceur;
+		$Prod_Mark_Diff_Bcp_Annonceur;
 		$DateDeb;
 		$DateFin;
 
-	
-								if (isset($_POST['support'])) {
+
+								                if (isset($_POST['support'])) {
                                   $Support = $_POST['support'];
                                   echo($Support);
                                 }
@@ -58,14 +58,23 @@
                                 if (isset($_POST['Bcp_Prod_Mem_Mark'])) {
                                   $Bcp_Prod_Mem_Mark = $_POST['Bcp_Prod_Mem_Mark'];
                                   echo($Bcp_Prod_Mem_Mark);
+                                }else {
+                                  $Bcp_Prod_Mem_Mark = "0";
+                                  echo($Bcp_Prod_Mem_Mark);
                                 }
-                                if (isset($_POST['Prod_Mark_diff_mem_annonceur'])) {
-                                  $Prod_Mark_diff_mem_annonceur = $_POST['Prod_Mark_diff_mem_annonceur'];
-                                  echo($Prod_Mark_diff_mem_annonceur);
+                                if (isset($_POST['Prod_Mark_Diff_Mem_Annonceur'])) {
+                                  $Prod_Mark_Diff_Mem_Annonceur = $_POST['Prod_Mark_Diff_Mem_Annonceur'];
+                                  echo($Prod_Mark_Diff_Mem_Annonceur);
+                                }else {
+                                  $Prod_Mark_Diff_Mem_Annonceur = "0";
+                                  echo($Prod_Mark_Diff_Mem_Annonceur);
                                 }
-                                if (isset($_POST['Prod_Mark_diff_bcp_annonceur'])) {
-                                  $Prod_Mark_diff_bcp_annonceur = $_POST['Prod_Mark_diff_bcp_annonceur'];
-                                  echo($Prod_Mark_diff_bcp_annonceur);
+                                if (isset($_POST['Prod_Mark_Diff_Bcp_Annonceur'])) {
+                                  $Prod_Mark_Diff_Bcp_Annonceur = $_POST['Prod_Mark_Diff_Bcp_Annonceur'];
+                                  echo($Prod_Mark_Diff_Bcp_Annonceur);
+                                }else {
+                                  $Prod_Mark_Diff_Bcp_Annonceur = "0";
+                                  echo($Prod_Mark_Diff_Bcp_Annonceur);
                                 }
                                 if (isset($_POST['DateDeb'])) {
                                   $DateDeb = $_POST['DateDeb'];
@@ -79,11 +88,13 @@
                                 }
 
                               $base = new database();
-                              try {
-                              		$base->insertionSimpleSansDateFin($libele,$EstIndicie,$PrixBase,$Bcp_Prod_Mem_Mark,$Prod_Mark_diff_mem_annonceur,$Prod_Mark_diff_bcp_annonceur,$Support,$DateDeb);
-                              } catch (Exception $e) {
-                              		$base->insertionSimpleAvecDateFin($libele,$EstIndicie,$PrixBase,$Bcp_Prod_Mem_Mark,$Prod_Mark_diff_mem_annonceur,$Prod_Mark_diff_bcp_annonceur,$Support,$DateDeb,$DateFin);
-                              }
+                              if($_POST['DateFin'] == "")$idLastGrid = $base->insertionSimpleSansDateFin($libele,$EstIndicie,$PrixBase,$Bcp_Prod_Mem_Mark,$Prod_Mark_Diff_Mem_Annonceur,$Prod_Mark_Diff_Bcp_Annonceur,$Support,$DateDeb);
+                              $idLastGrid = $base->insertionSimpleAvecDateFin($libele,$EstIndicie,$PrixBase,$Bcp_Prod_Mem_Mark,$Prod_Mark_Diff_Mem_Annonceur,$Prod_Mark_Diff_Bcp_Annonceur,$Support,$DateDeb,$DateFin);
+                              session_start();
+                              $_SESSION['idLastGrid'] = $idLastGrid;
+                              $_SESSION['support'] = $Support;
+                              header("Location: pagelignegrille.php");
+                              
                               
 	/*try {
                               $db = new PDO('mysql:host=localhost;dbname=regie_pub','root','');

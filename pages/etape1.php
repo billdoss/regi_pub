@@ -1,5 +1,5 @@
-<br><br>
-<br><br>
+<div id="wizard" class="form_wizard wizard_horizontal">
+                      
 <div id="step-1">
                         <form class="form-horizontal form-label-left" method="post" action="variables.php">
                           <div class="form-group">
@@ -49,26 +49,8 @@
       }
   }
 </script>
-                          
-
-<br><br>
-<br><br>
-                        <div class="form-group"><!--
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Support : </label>
-                          <h2 id="h2supp">{{}}</h2>-->
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Grille tarifaire : </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              <select class="form-control col-md-7 col-xs-12" name="etats">
-                                <option value="0">Choix de l'état</option>
-                                <option value="Activé">Activé</option>
-                                <option value="Caduque">Caduque</option>
-                                <option value="tout">tout</option>                                  
-                              </select>                              
-                            </div>
-                          </div>
-
-  <br><br>
-
+ </div>      
+ <div id="step-2">
                           <div class="form-group">
                             <h2>Nomination Grille</h2><br>
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Libellé : </label>
@@ -78,57 +60,99 @@
                           </div>
 
                           
-                          <div class="form-group"><br>
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Désirez vous une grille indicé ?</label><br>
-                            Oui:<input type="radio" class="flat" name="indicer" id="oui" value="oui"  checked="" required/> 
-                            Non:<input type="radio" class="flat" name="indicer" id="non" value="non"/><br><br>
-                          </div>
-
-
-    <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
-                            <script>
-                                  
-                                  //$("#non").click(function(){
-                                    //  $(".cacher").hide();
-                                  //});
-                            </script>
-
+                          <div class="form-group"><br><br><br>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Désirez vous une grille indicé ?</label><br>
+                            Oui  :<input type="radio" class="flat" name="indicer" id="oui" value="oui"/> 
+                            Non  :<input type="radio" class="flat" name="indicer" id="non" value="non"/><br>
+                          </div>                   
+                        
                           <!--partie invisibl si non-->
-                      <div class="cacher">
+                      <div >
+                      <section class="cacher">
                           <div class="form-group" id="1">
-                          <label class="control-label col-md-5 col-sm-5 col-xs-12">Prix de base :</label>
-                            <input type="text" name="PrixBase" value="0"/> <br><br>
+                            <label class="control-label col-md-5 col-sm-5 col-xs-12" id="textprix">Prix de base :</label>
+                            <input type="text" name="PrixBase" id="saisipri" value="0"/> <br><br>
                           </div>
+                        
+                          <h3 id="textcondition">Conditions de surfacturation :</h3>
+                            <p style="padding: 5px;" id="blockcondition">
 
-                          <h3>Conditions de surfacturation :</h3>
-                          <div class="form-group">
-                          <label class="control-label col-md-5 col-sm-5 col-xs-12"><li>Presence de plusieurs produits de la meme marque :</li></label>
-                            <input type="text" name="Bcp_Prod_Mem_Mark" value="0"/> <br><br>
-                          </div>
+                              <input type="checkbox" name="Bcp_Prod_Mem_Mark" value="1" class="flat" /> Presence de plusieurs produits de la meme marque
+                              <br />
 
-                          <div class="form-group">
-                          <label class="control-label col-md-5 col-sm-5 col-xs-12"><li>Presence de produits de marque differentes mais du meme annonceur :</li></label>
-                            <input type="text" name="Prod_Mark_diff_mem_annonceur" value="0"/> <br><br>
-                          </div>
+                              <input type="checkbox" name="Prod_Mark_Diff_Mem_Annonceur" value="1" class="flat" /> Presence de produits de marque differentes mais du meme annonceur
+                              <br />
 
-                          <div class="form-group">
-                          <label class="control-label col-md-5 col-sm-5 col-xs-12"><li>Presence de marque différentes de plusieurs annonceurs :</li></label>
-                            <input type="text" name="Prod_Mark_diff_bcp_annonceur" value="0"/> <br><br>
-                          </div>
-
-                          <div class="form-group">
-                          <label class="control-label col-md-5 col-sm-5 col-xs-12">Date de Début  :</label>
-                            <input type="date" name="DateDeb" value="0"/> <br><br>
-                          </div>
-
-                          <div class="form-group">
-                          <label class="control-label col-md-5 col-sm-5 col-xs-12">Date de Fin  :</label>
-                            <input type="date" name="DateFin" value="0"/> <br><br>
-                          </div>
-                      </div>
+                              <input type="checkbox" name="Prod_Mark_Diff_Bcp_Annonceur" value="1" class="flat" /> Presence de marque différentes de plusieurs annonceurs
+                              <br />
+                            <p>
+                      </section>
                           
 
-                              <button type="submit">Valider</button>
-		                     
+                        <script src="../vendors/jquery/dist/jquery.min.js"></script>         
+                        <script>
+                            $(".cacher").hide();
+                            $("#non").click(function(){
+                              $(".cacher").hide();
+                            });
+                            $("#oui").click(function(){
+                              $(".cacher").show();
+                            });
+                            
+                        </script>
+
+
+                        <div class="container">
+                            <div class='col-md-5'>
+                                <div class="form-group">
+                                    Date De Début
+                                    <div class='input-group date' id='datetimepicker6'>
+                                        <input type='text' class="form-control" name="DateDeb"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-md-5'>
+                                <div class="form-group">
+                                    Date De Fin
+                                    <div class='input-group date' id='datetimepicker7'>
+                                        <input type='text' class="form-control" name="DateFin" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- jQuery -->
+                        <script src="../vendors/jquery/dist/jquery.min.js"></script>
+                        <script type="text/javascript">
+                            $(function () {
+                                //$('#datetimepicker6').datetimepicker();
+                                $('#datetimepicker6').datetimepicker({
+                                    format: 'YYYY/MM/DD'
+                                });
+                                $('#datetimepicker7').datetimepicker({
+                                    format: 'YYYY/MM/DD'
+                                });
+                                $('#datetimepicker7').datetimepicker({
+                                    useCurrent: false //Important! See issue #1075
+                                });
+                                $("#datetimepicker6").on("dp.change", function (e) {
+                                    $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+                                });
+                            });
+                        </script>
+                          
+                        
+ </div>                   
+
+                          
                       </div>
+                          <button type="submit">Valider</button>
+                      </div>
+
+
+                      

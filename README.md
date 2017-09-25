@@ -1,2 +1,1 @@
-# regie
-# regi_pub
+# pub

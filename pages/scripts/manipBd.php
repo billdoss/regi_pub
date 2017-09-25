@@ -26,6 +26,147 @@
               $req->closeCursor();
             }
 
+            function selectElementToSupport(){
+              try {
+                  $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                  $req = $db->query("SELECT idsupport,libsupport FROM support");
+                  while ($donnee = $req->fetch()) {
+                    ?><option value= <?php echo ($donnee['idsupport']);?> > <?php echo($donnee['libsupport']);?> </option>
+                    <?php 
+                  }
+              } catch (Exception $e) {
+                echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+              }
+              $req->closeCursor();
+            }
+
+            private function selectElementToFormatCondition($key){
+              try {
+                    $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                    $req = $db->query("SELECT idformat,libformat FROM format WHERE idformat =".$key);
+                    while ($donnee = $req->fetch()) {
+                      ?>
+                          <td id=<?php echo ($donnee['idformat']);?>><?php echo ($donnee['libformat']);?></td>
+                      <?php 
+                    }
+                } catch (Exception $e) {
+                    echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+                }
+                $req->closeCursor();
+            }
+
+            private function selectElementToEmplacementCondition($key){
+              try {
+                    $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                    $req = $db->query("SELECT idemplacement,libemplacement FROM format WHERE idemplacement =".$key);
+                    while ($donnee = $req->fetch()) {
+                      ?>
+                          <td id=<?php echo ($donnee['idemplacement']);?>><?php echo ($donnee['libemplacement']);?></td>
+                      <?php 
+                    }
+                } catch (Exception $e) {
+                    echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+                }
+                $req->closeCursor();
+            }
+
+            private function selectSupportKeyIngriTarif(){
+                //$tab = array();
+                try {
+                    $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');                    
+                    $reqIdSupp = $db->query("SELECT idSupport FROM grilletarifaire");
+                    while ($idsupp = $reqIdSupp->fetch()) {
+                        $this->selectElementToSupportCondition($idsupp['idSupport']);
+                    }
+                } catch (Exception $e) {
+                    echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+                }
+                $req->closeCursor();
+                //var_dump($tab);
+            }
+
+            private function selectElementToSupportCondition($key){
+              try {
+                    $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                    $req = $db->query("SELECT idsupport,libsupport FROM support WHERE idsupport =".$key);
+                    while ($donnee = $req->fetch()) {
+                      ?>
+                          <td id= <?php echo ($donnee['idsupport']);?> ><?php echo ($donnee['libsupport']);?></td>
+                      <?php 
+                    }
+                } catch (Exception $e) {
+                    echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+                }
+                $req->closeCursor();
+            }
+
+            function selectElementToLigneGri(){
+              try{
+                $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                $req = $db->query("SELECT support.libsupport, 
+                                      emplacement.libemplacement, 
+                                      format.libformat, 
+                                      grilletarifaire.montantind
+                  FROM `lignegrille`,support, emplacement, format, grilletarifaire
+                  WHERE lignegrille.idgrilletarif=grilletarifaire.idgrilletarif
+                  and lignegrille.idformat=format.idformat
+                  and lignegrille.idemplacement=emplacement.idemplacement
+                  and grilletarifaire.IdSupport=support.idsupport
+                  ORDER by lignegrille.idgrille asc");
+                while ($donnee = $req->fetch()) {
+                        ?>
+                        <tbody>
+                          <tr>
+                            <div id="etat">
+                                <th scope="row">1</th>
+                                <td><?php echo ($donnee['libsupport']);?></td>
+                                <td><?php echo ($donnee['libemplacement']);?></td>
+                                <td><?php echo ($donnee['libformat']);?></td>
+                                <td><?php echo ($donnee['montantind']);?></td>
+                                <td id="modif">Modifier</td>
+                                <td id="delete">Supprimer</td>
+                            </div>
+                          </tr>
+                        </tbody>
+                    <?php 
+                  }
+              }catch(Exception $e){
+
+              }
+                $req->closeCursor();
+            }
+            
+            function selectElementToFormat(){
+              try {
+                  $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                  $req = $db->query("SELECT idformat,libformat FROM format");
+                  while ($donnee = $req->fetch()) {
+                    ?><option value= <?php echo ($donnee['idformat']);?> > <?php echo($donnee['libformat']);?> </option>
+                    <?php 
+                  }
+              } catch (Exception $e) {
+                echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+              }
+              $req->closeCursor();
+            }
+
+
+
+            function selectElementToEmplacement(){
+              try {
+                  $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
+                  $req = $db->query("SELECT idemplacement,libemplacement FROM emplacement");
+                  while ($donnee = $req->fetch()) {
+                    ?><option value= <?php echo ($donnee['idemplacement']);?> > <?php echo($donnee['libemplacement']);?> </option>
+                    <?php 
+                  }
+              } catch (Exception $e) {
+                echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+              }
+              $req->closeCursor();
+            }
+
+
 
             function selectElementToSupportOfMedia($idmedia){
               try {
@@ -58,9 +199,10 @@
                                             'idsupport' => $idsupport,
                                             'datedeb' => $datedeb
                                         ));
+                              
                               if (!$result) {
                                   // ça t'affiche juste un code. C'est suffisant en prod pour que l'utilisateur te fasse un retour
-                                  echo "Une erreur est survenue : " . $req->errorCode();
+                                  //echo "Une erreur est survenue : " . $req->errorCode();
                                   // Mais en dev, pour comprendre, tu peux faire ça :
                                   print_r($req->errorInfo());
                                                       } 
@@ -68,6 +210,7 @@
                                           catch (exception $e) {
                               echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
                         }
+                        return $db->lastInsertId();
             }
 
 
@@ -98,29 +241,37 @@
                                           catch (exception $e) {
                               echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
                         }
+                        return $db->lastInsertId();
             }
 
 
             // surcharge de fonction au cas ou il y'a surfacturation
-            function insertion($libgrilletarif,$indice,$montantind,$cobplusprob,$cobunemarque,$cobplusmarque,$idsupport,$datedeb,$datefin){
+            function insertionLignGri($idgrilletarif,$idformat,$idemplacement,$montant/*,$day*/)
+            {
                   try {
                         $db = new PDO('mysql:host=localhost;dbname=pigepro','root','');
-                        $req = $db->prepare("insert into grilletarifaire ('libgrilletarif','indice','montantind','cobplusprob','cobunemarque','cobplusmarque','idsupport','datedeb','datefin')values($libgrilletarif,$indice,$montantind,$cobplusprob,$cobunemarque,$cobplusmarque,$idsupport,$datedeb,$datefin);");
-                        $result = $db->exec($req);
-                            if (!$result) {
-        // ça t'affiche juste un code. C'est suffisant en prod pour que l'utilisateur te fasse un retour
-                      echo "Une erreur est survenue : " . $req->errorCode();
-
-                      // Mais en dev, pour comprendre, tu peux faire ça :
-                      print_r($req->errorInfo());
-                          }
-
-                  } 
-                  catch (PDOException $e) {
-                        echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
-                  }
-            }
-            
+                        $req = $db->prepare('INSERT INTO lignegrille 
+                        (idgrilletarif,idformat,idemplacement,prix) VALUES 
+                        (:idgrilletarif,:idformat,:idemplacement,:montant)');
+                                $result = $req->execute(array(
+                                      'idgrilletarif' => $idgrilletarif,
+                                      'idformat' => $idformat,
+                                      'idemplacement' => $idemplacement,
+                                      //'day' => $day,
+                                      'montant' => $montant
+                                  ));
+                                
+                    if (!$result) {
+                        // ça t'affiche juste un code. C'est suffisant en prod pour que l'utilisateur te fasse un retour
+                        echo "Une erreur est survenue : " . $req->errorCode();
+                        // Mais en dev, pour comprendre, tu peux faire ça :
+                        print_r($req->errorInfo());
+                                            } 
+                                }
+                                catch (exception $e) {
+                    echo "IMPOSSIBLE DE SE CONNECTER A LA Base de donnee";
+              }
+            }    
       }
 
          ?>

@@ -30,7 +30,7 @@
     <link href="../vendors/starrr/dist/starrr.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
   </head>
 
@@ -99,11 +99,11 @@
             </nav>
           </div>
           <div class="navbar navbar-right">
-              <a id="lien" href="index.php">Support</a>
-                <a id="lien" href="pagelignegrille.php">les ligne de la grille </a>
-                <a id="lien" href="">Support</a>
-                <a id="lien" href="">Médias</a> </div>
-        </div>
+          <a id="lien" class="btn " href="index1.php">Support</a>
+            <a id="lien" class="btn " href="pagelignegrille.php">les lignes de la grille </a>
+            <a id="lien" class="btn " href="">Support</a>
+            <a id="lien" class="btn " href="">Médias</a> </div>
+    </div class="row">
         <!-- /top navigation -->
 
         <!-- page content -->
